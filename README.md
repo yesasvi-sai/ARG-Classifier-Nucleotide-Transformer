@@ -1,4 +1,5 @@
 # ARG-Classifier-Nucleotide-Transformer
+
 This repository contains the code and model files for a deep learning-based approach to classify antibiotic resistance genes (ARGs) using a transformer model adapted for nucleotide sequences. The goal of this project is to enable efficient and accurate prediction of ARGs from raw DNA sequences.
 
 Authors
@@ -14,10 +15,12 @@ By training on labeled genomic datasets—comprising resistant genes, non-resist
 Installation
 
 To run this project, begin by setting up a virtual environment:
+
 conda create -n arg_classifier_env python=3.10
 conda activate arg_classifier_env
 
 Install the necessary Python packages:
+
 pip install transformers==4.38.1 datasets==2.18.0 torch==2.2.1 pandas==2.2.1 \
             numpy==1.26.4 scikit-learn==1.4.1 matplotlib==3.8.3 seaborn==0.13.2
 
@@ -42,22 +45,27 @@ import torch
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 
 Load model and tokenizer
+
 model_directory = "arg_classifier"
 tokenizer = AutoTokenizer.from_pretrained(model_directory)
 model = AutoModelForSequenceClassification.from_pretrained(model_directory)
 
 Input sequence
+
 sequence = "ATGCGTACGTAGCTAGCTAGCTAGCGTATCGTAGCTAGT"
 encoded = tokenizer(sequence, return_tensors="pt", padding="max_length", truncation=True, max_length=512)
 
 Generate prediction
+
 model.eval()
 with torch.no_grad():
     outputs = model(**encoded)
     label = torch.argmax(outputs.logits, dim=1).item()
 
 Print result
+
 print("Prediction:", "Resistant" if label == 1 else "Non-Resistant")
 
 Example output:
+
 Prediction: Resistant
