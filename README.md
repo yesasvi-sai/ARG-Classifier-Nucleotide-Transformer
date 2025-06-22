@@ -41,22 +41,22 @@ Use the following script to classify a given DNA sequence:
 import torch
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 
-# Load model and tokenizer
+Load model and tokenizer
 model_directory = "arg_classifier"
 tokenizer = AutoTokenizer.from_pretrained(model_directory)
 model = AutoModelForSequenceClassification.from_pretrained(model_directory)
 
-# Input sequence
+Input sequence
 sequence = "ATGCGTACGTAGCTAGCTAGCTAGCGTATCGTAGCTAGT"
 encoded = tokenizer(sequence, return_tensors="pt", padding="max_length", truncation=True, max_length=512)
 
-# Generate prediction
+Generate prediction
 model.eval()
 with torch.no_grad():
     outputs = model(**encoded)
     label = torch.argmax(outputs.logits, dim=1).item()
 
-# Print result
+Print result
 print("Prediction:", "Resistant" if label == 1 else "Non-Resistant")
 
 Example output:
